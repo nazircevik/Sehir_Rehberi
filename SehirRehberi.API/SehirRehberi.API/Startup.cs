@@ -10,6 +10,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using SehirRehberi.API.Data;
+using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using SehirRehberi.API.Helpers;
 
 namespace SehirRehberi.API
 {
@@ -26,6 +30,10 @@ namespace SehirRehberi.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddAutoMapper(typeof(Startup)); 
+
+            services.AddScoped<IAppRepository,AppRepository > ();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
