@@ -32,7 +32,8 @@ namespace SehirRehberi.API
             services.AddControllers();
             services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddAutoMapper(typeof(Startup));
-            services.AddMvc().AddNewtonsoftJson(opt => { opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore; });
+            // loop hatasýný engellemek için
+            services.AddMvc().AddNewtonsoftJson(opt => { opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore; });
             services.AddScoped<IAppRepository, AppRepository>();
         }
 

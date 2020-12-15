@@ -17,7 +17,7 @@ namespace SehirRehberi.API.Controllers
     {
         IAppRepository _appRepository;
         IMapper _mapper;
-        public CitiesController(IAppRepository appRepository,IMapper mapper)
+        public CitiesController(IAppRepository appRepository, IMapper mapper)
         {
             _appRepository = appRepository;
             _mapper = mapper;
@@ -45,6 +45,13 @@ namespace SehirRehberi.API.Controllers
             //auto mapper
             var cityToReturn = _mapper.Map<CityForDetailDto>(city);
             return Ok(cityToReturn);
+        }
+        [HttpGet]
+        [Route("photos")]
+        public ActionResult GetPhotosByCity(int cityId)
+        {
+            var photos = _appRepository.GetPhoto(cityId);
+            return Ok(photos);
         }
     }
 }
