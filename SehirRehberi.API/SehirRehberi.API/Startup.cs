@@ -13,8 +13,7 @@ using Microsoft.Extensions.Logging;
 using SehirRehberi.API.Data;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
-using SehirRehberi.API.Helpers;
-
+using Newtonsoft.Json;
 namespace SehirRehberi.API
 {
     public class Startup
@@ -29,11 +28,12 @@ namespace SehirRehberi.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddControllers();
             services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddAutoMapper(typeof(Startup)); 
-
-            services.AddScoped<IAppRepository,AppRepository > ();
+            services.AddAutoMapper(typeof(Startup));
+            services.AddMvc().AddNewtonsoftJson(opt => { opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore; });
+            services.AddScoped<IAppRepository, AppRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,7 +47,7 @@ namespace SehirRehberi.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+      
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
